@@ -31,6 +31,7 @@ class App:
         self.active = True # if tab is focused when running through web
 
         self.clock = pygame.time.Clock()
+
         # delta time
         self.dt = 1
         self.last_time = time.time() - 1/60
@@ -41,14 +42,18 @@ class App:
         self.dt = (time.time() - self.last_time) * 60
         self.last_time = time.time()
 
+        # just a test, usually just fill it with black
         self.screen.fill((int(255 - (math.sin(time.time()) * 125 + 125)), int(math.sin(time.time()) * 125 + 125), 0))
 
     # asynchronous main loop to run in browser
     async def run(self):
         while True:
+            # update event loop
             for event in pygame.event.get():
+                # just return to quit
                 if event.type == pygame.QUIT:
                     return
+                # handle window resizing on desktop
                 if event.type == pygame.WINDOWRESIZED:
                     self.screen = pygame.Surface((self.display.get_width() // SCALE, self.display.get_height() // SCALE))
             
@@ -71,6 +76,7 @@ class App:
                 self.display.blit(pygame.transform.scale(self.screen, self.display.get_size()), (0, 0))
                 pygame.display.flip()
             else:
+                # if browser tab isn't focused, don't update the display and just change the caption to 'IDLE'
                 pygame.display.set_caption("IDLE")
 
             await asyncio.sleep(0) # IMPORTANT: keep this for pygbag to work!
