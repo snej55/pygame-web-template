@@ -1,3 +1,10 @@
+# Basic pygame template that runs on the web using pygbag (also still works on desktop).
+# Setup:
+# pip install pygame-ce pygbag
+# 
+# Running (from root directory):
+# pygbag .
+
 import asyncio, pygame, time, math, sys, platform
 
 pygame.init()
@@ -12,6 +19,7 @@ if WEB_PLATFORM:
     # keep pixelated look for pygbag
     platform.window.canvas.style.imageRendering = "pixelated"
 
+# window dimensions and scaling
 WIDTH, HEIGHT = 640, 480
 SCALE = 2
 
@@ -53,17 +61,19 @@ class App:
 
             # check if page is active
             if self.active:
+                # don't render screen dimensions if on web
                 if WEB_PLATFORM:
                     pygame.display.set_caption(f"FPS: {self.clock.get_fps() :.1f}")
                 else:
                     pygame.display.set_caption(f"FPS: {self.clock.get_fps() :.1f} Display: {self.screen.get_width()} * {self.screen.get_height()}")
-                # scale display
-                self.display.blit(pygame.transform.scale2x(self.screen), (0, 0))
+                
+                # scale display (don't use scale2x, which uses pixel nearest algorithm and ruins pixel art)
+                self.display.blit(pygame.transform.scale(self.screen, self.display.get_size()), (0, 0))
                 pygame.display.flip()
             else:
                 pygame.display.set_caption("IDLE")
 
-            await asyncio.sleep(0) # keep this for pygbag to work
+            await asyncio.sleep(0) # IMPORTANT: keep this for pygbag to work!
             self.clock.tick(60) # don't really need more than 60 fps
 
 # run App() asynchronously so it works with pygbag
