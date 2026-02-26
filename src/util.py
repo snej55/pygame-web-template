@@ -9,7 +9,6 @@ def load_image(path) -> pygame.Surface:
     surf.set_colorkey((0, 0, 0))
     return surf
 
-
 def load_images(path):
     imgs = []
     for img_path in os.listdir(BASE_IMG_PATH + path):
@@ -19,7 +18,6 @@ def load_images(path):
 
 def load_sound(path) -> pygame.mixer.Sound:
     return pygame.mixer.Sound(BASE_AUDIO_PATH + path)
-
 
 def load_tile_imgs(path, tile_size):
     img = load_image(path)
@@ -41,19 +39,16 @@ def snip(spritesheet, pos, dimensions):
     image = spritesheet.subsurface(clip_rect)
     return image
 
-
 def read_json(path):
     f = open(path, "r")
     data = json.load(f)
     f.close()
     return data
 
-
 def write_json(path, data):
     f = open(path, "w")
     json.dump(data, f)
     f.close()
-
 
 def load_palette(img: pygame.Surface):
     img_array = pygame.pixelarray.PixelArray(img)
